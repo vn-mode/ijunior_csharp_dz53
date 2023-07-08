@@ -4,21 +4,21 @@ using System.Linq;
 
 class Program
 {
-    const string MenuTitle = "Меню:";
-    const string MenuPrompt = "Выберите пункт меню:";
-    const string SortByFullNameOption = "1";
-    const string SortByAgeOption = "2";
-    const string FilterByDiseaseOption = "3";
-    const string ExitOption = "0";
-    const string InvalidChoiceMessage = "Некорректный выбор.";
-    const string SortByFullNameMessage = "Список больных, отсортированный по ФИО:";
-    const string SortByAgeMessage = "Список больных, отсортированный по возрасту:";
-    const string FilterByDiseaseMessage = "Список больных с заболеванием '{0}':";
-    const string EnterDiseaseMessage = "Введите название заболевания: ";
-    const string PatientInfoFormat = "ФИО: {0}, Возраст: {1}, Заболевание: {2}";
-    const string FilteredPatientInfoFormat = "ФИО: {0}, Возраст: {1}";
+    private const string MenuTitle = "Меню:";
+    private const string MenuPrompt = "Выберите пункт меню:";
+    private const string SortByFullNameOption = "1";
+    private const string SortByAgeOption = "2";
+    private const string FilterByDiseaseOption = "3";
+    private const string ExitOption = "0";
+    private const string InvalidChoiceMessage = "Некорректный выбор.";
+    private const string SortByFullNameMessage = "Список больных, отсортированный по ФИО:";
+    private const string SortByAgeMessage = "Список больных, отсортированный по возрасту:";
+    private const string FilterByDiseaseMessage = "Список больных с заболеванием '{0}':";
+    private const string EnterDiseaseMessage = "Введите название заболевания: ";
+    private const string PatientInfoFormat = "ФИО: {0}, Возраст: {1}, Заболевание: {2}";
+    private const string FilteredPatientInfoFormat = "ФИО: {0}, Возраст: {1}";
 
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
         List<Patient> patients = new List<Patient>
         {
@@ -27,19 +27,12 @@ class Program
             new Patient("Сидоров Сидор Сидорович", 30, "Грипп"),
         };
 
-        while (true)
+        bool exit = false;
+
+        while (!exit)
         {
-            Console.WriteLine(MenuTitle);
-            Console.WriteLine($"{SortByFullNameOption}) Отсортировать всех больных по ФИО");
-            Console.WriteLine($"{SortByAgeOption}) Отсортировать всех больных по возрасту");
-            Console.WriteLine($"{FilterByDiseaseOption}) Вывести больных с определенным заболеванием");
-            Console.WriteLine($"{ExitOption}) Выход");
-            Console.WriteLine();
-
-            Console.Write(MenuPrompt);
-            string choice = Console.ReadLine();
-
-            Console.WriteLine();
+            DisplayMenu();
+            string choice = GetUserChoice();
 
             switch (choice)
             {
@@ -56,7 +49,8 @@ class Program
                     break;
 
                 case ExitOption:
-                    return;
+                    exit = true;
+                    break;
 
                 default:
                     Console.WriteLine(InvalidChoiceMessage);
@@ -67,9 +61,25 @@ class Program
         }
     }
 
-    static void SortPatientsByFullName(List<Patient> patients)
+    private static void DisplayMenu()
     {
-        var sortedPatients = patients.OrderBy(p => p.FullName);
+        Console.WriteLine(MenuTitle);
+        Console.WriteLine($"{SortByFullNameOption}) Отсортировать всех больных по ФИО");
+        Console.WriteLine($"{SortByAgeOption}) Отсортировать всех больных по возрасту");
+        Console.WriteLine($"{FilterByDiseaseOption}) Вывести больных с определенным заболеванием");
+        Console.WriteLine($"{ExitOption}) Выход");
+        Console.WriteLine();
+    }
+
+    private static string GetUserChoice()
+    {
+        Console.Write(MenuPrompt);
+        return Console.ReadLine();
+    }
+
+    private static void SortPatientsByFullName(List<Patient> patients)
+    {
+        var sortedPatients = patients.OrderBy(patient => patient.FullName);
         Console.WriteLine(SortByFullNameMessage);
 
         foreach (var patient in sortedPatients)
@@ -78,9 +88,9 @@ class Program
         }
     }
 
-    static void SortPatientsByAge(List<Patient> patients)
+    private static void SortPatientsByAge(List<Patient> patients)
     {
-        var sortedPatients = patients.OrderBy(p => p.Age);
+        var sortedPatients = patients.OrderBy(patient => patient.Age);
         Console.WriteLine(SortByAgeMessage);
 
         foreach (var patient in sortedPatients)
@@ -89,12 +99,12 @@ class Program
         }
     }
 
-    static void FilterPatientsByDisease(List<Patient> patients)
+    private static void FilterPatientsByDisease(List<Patient> patients)
     {
         Console.Write(EnterDiseaseMessage);
         string disease = Console.ReadLine();
 
-        var filteredPatients = patients.Where(p => p.Disease == disease);
+        var filteredPatients = patients.Where(patient => patient.Disease == disease);
         Console.WriteLine(string.Format(FilterByDiseaseMessage, disease));
 
         foreach (var patient in filteredPatients)
