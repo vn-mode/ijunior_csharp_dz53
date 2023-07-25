@@ -4,28 +4,34 @@ using System.Linq;
 
 class Program
 {
-    private const string MenuTitle = "Меню:";
-    private const string MenuPrompt = "Выберите пункт меню:";
-    private const string SortByFullNameOption = "1";
-    private const string SortByAgeOption = "2";
-    private const string FilterByDiseaseOption = "3";
-    private const string ExitOption = "0";
-    private const string InvalidChoiceMessage = "Некорректный выбор.";
-    private const string SortByFullNameMessage = "Список больных, отсортированный по ФИО:";
-    private const string SortByAgeMessage = "Список больных, отсортированный по возрасту:";
-    private const string FilterByDiseaseMessage = "Список больных с заболеванием '{0}':";
-    private const string EnterDiseaseMessage = "Введите название заболевания: ";
-    private const string PatientInfoFormat = "ФИО: {0}, Возраст: {1}, Заболевание: {2}";
-
     private static void Main(string[] args)
     {
-        List<Patient> patients = new List<Patient>
+        Hospital hospital = new Hospital();
+        hospital.Start();
+    }
+}
+
+class Hospital
+{
+    private readonly string SortByFullNameOption = "1";
+    private readonly string SortByAgeOption = "2";
+    private readonly string FilterByDiseaseOption = "3";
+    private readonly string ExitOption = "0";
+
+    private readonly List<Patient> patients;
+
+    public Hospital()
+    {
+        patients = new List<Patient>
         {
             new Patient("Иванов Иван Иванович", 35, "Грипп"),
             new Patient("Петров Петр Петрович", 45, "Ангина"),
             new Patient("Сидоров Сидор Сидорович", 30, "Грипп"),
         };
+    }
 
+    public void Start()
+    {
         bool isExited = false;
 
         while (!isExited)
@@ -35,24 +41,24 @@ class Program
 
             switch (choice)
             {
-                case SortByFullNameOption:
-                    DisplayPatientsInfo(patients.OrderBy(patient => patient.FullName), SortByFullNameMessage);
+                case string option when option == SortByFullNameOption:
+                    DisplayPatientsInfo(patients.OrderBy(patient => patient.FullName), "Список больных, отсортированный по ФИО:");
                     break;
 
-                case SortByAgeOption:
-                    DisplayPatientsInfo(patients.OrderBy(patient => patient.Age), SortByAgeMessage);
+                case string option when option == SortByAgeOption:
+                    DisplayPatientsInfo(patients.OrderBy(patient => patient.Age), "Список больных, отсортированный по возрасту:");
                     break;
 
-                case FilterByDiseaseOption:
-                    FilterPatientsByDisease(patients);
+                case string option when option == FilterByDiseaseOption:
+                    FilterPatientsByDisease();
                     break;
 
-                case ExitOption:
+                case string option when option == ExitOption:
                     isExited = true;
                     break;
 
                 default:
-                    Console.WriteLine(InvalidChoiceMessage);
+                    Console.WriteLine("Некорректный выбор.");
                     break;
             }
 
@@ -60,9 +66,9 @@ class Program
         }
     }
 
-    private static void DisplayMenu()
+    private void DisplayMenu()
     {
-        Console.WriteLine(MenuTitle);
+        Console.WriteLine("Меню:");
         Console.WriteLine($"{SortByFullNameOption}) Отсортировать всех больных по ФИО");
         Console.WriteLine($"{SortByAgeOption}) Отсортировать всех больных по возрасту");
         Console.WriteLine($"{FilterByDiseaseOption}) Вывести больных с определенным заболеванием");
@@ -70,33 +76,33 @@ class Program
         Console.WriteLine();
     }
 
-    private static string GetUserChoice()
+    private string GetUserChoice()
     {
-        Console.Write(MenuPrompt);
+        Console.Write("Выберите пункт меню:");
         return Console.ReadLine();
     }
 
-    private static void DisplayPatientsInfo(IEnumerable<Patient> patients, string message)
+    private void DisplayPatientsInfo(IEnumerable<Patient> patients, string message)
     {
         Console.WriteLine(message);
 
         foreach (var patient in patients)
         {
-            Console.WriteLine(string.Format(PatientInfoFormat, patient.FullName, patient.Age, patient.Disease));
+            Console.WriteLine($"ФИО: {patient.FullName}, Возраст: {patient.Age}, Заболевание: {patient.Disease}");
         }
     }
 
-    private static void FilterPatientsByDisease(List<Patient> patients)
+    private void FilterPatientsByDisease()
     {
-        Console.Write(EnterDiseaseMessage);
+        Console.Write("Введите название заболевания: ");
         string disease = Console.ReadLine();
 
         var filteredPatients = patients.Where(patient => patient.Disease == disease);
-        Console.WriteLine(string.Format(FilterByDiseaseMessage, disease));
+        Console.WriteLine($"Список больных с заболеванием '{disease}':");
 
         foreach (var patient in filteredPatients)
         {
-            Console.WriteLine(string.Format(PatientInfoFormat, patient.FullName, patient.Age, patient.Disease));
+            Console.WriteLine($"ФИО: {patient.FullName}, Возраст: {patient.Age}, Заболевание: {patient.Disease}");
         }
     }
 }
