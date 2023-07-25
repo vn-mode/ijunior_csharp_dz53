@@ -7,16 +7,16 @@ class Program
     private static void Main(string[] args)
     {
         Hospital hospital = new Hospital();
-        hospital.Start();
+        hospital.RunHospitalManagementSystem();
     }
 }
 
 class Hospital
 {
-    private readonly string SortByFullNameOption = "1";
-    private readonly string SortByAgeOption = "2";
-    private readonly string FilterByDiseaseOption = "3";
-    private readonly string ExitOption = "0";
+    private const string SortByFullNameOption = "1";
+    private const string SortByAgeOption = "2";
+    private const string FilterByDiseaseOption = "3";
+    private const string ExitOption = "0";
 
     private readonly List<Patient> patients;
 
@@ -30,7 +30,7 @@ class Hospital
         };
     }
 
-    public void Start()
+    public void RunHospitalManagementSystem()
     {
         bool isExited = false;
 
@@ -41,19 +41,19 @@ class Hospital
 
             switch (choice)
             {
-                case string option when option == SortByFullNameOption:
+                case SortByFullNameOption:
                     DisplayPatientsInfo(patients.OrderBy(patient => patient.FullName), "Список больных, отсортированный по ФИО:");
                     break;
 
-                case string option when option == SortByAgeOption:
+                case SortByAgeOption:
                     DisplayPatientsInfo(patients.OrderBy(patient => patient.Age), "Список больных, отсортированный по возрасту:");
                     break;
 
-                case string option when option == FilterByDiseaseOption:
+                case FilterByDiseaseOption:
                     FilterPatientsByDisease();
                     break;
 
-                case string option when option == ExitOption:
+                case ExitOption:
                     isExited = true;
                     break;
 
