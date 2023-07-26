@@ -88,8 +88,13 @@ class Hospital
 
         foreach (var patient in patients)
         {
-            Console.WriteLine($"ФИО: {patient.FullName}, Возраст: {patient.Age}, Заболевание: {patient.Disease}");
+            DisplayPatientInfo(patient);
         }
+    }
+
+    private void DisplayPatientInfo(Patient patient)
+    {
+        Console.WriteLine($"ФИО: {patient.FullName}, Возраст: {patient.Age}, Заболевание: {patient.Disease}");
     }
 
     private void FilterPatientsByDisease()
@@ -102,7 +107,7 @@ class Hospital
 
         foreach (var patient in filteredPatients)
         {
-            Console.WriteLine($"ФИО: {patient.FullName}, Возраст: {patient.Age}, Заболевание: {patient.Disease}");
+            DisplayPatientInfo(patient);
         }
     }
 }
