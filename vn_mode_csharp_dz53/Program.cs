@@ -94,7 +94,12 @@ class Hospital
 
     private void DisplayPatientInfo(Patient patient)
     {
-        Console.WriteLine($"ФИО: {patient.FullName}, Возраст: {patient.Age}, Заболевание: {patient.Disease}");
+        Console.WriteLine(FormatPatientInfo(patient));
+    }
+
+    private string FormatPatientInfo(Patient patient)
+    {
+        return $"ФИО: {patient.FullName}, Возраст: {patient.Age}, Заболевание: {patient.Disease}";
     }
 
     private void FilterPatientsByDisease()
