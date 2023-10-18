@@ -18,11 +18,11 @@ class Hospital
     private const string FilterByDiseaseOption = "3";
     private const string ExitOption = "0";
 
-    private readonly List<Patient> patients;
+    private readonly List<Patient> _patients;
 
     public Hospital()
     {
-        patients = new List<Patient>
+        _patients = new List<Patient>
         {
             new Patient("Иванов Иван Иванович", 35, "Грипп"),
             new Patient("Петров Петр Петрович", 45, "Ангина"),
@@ -42,11 +42,11 @@ class Hospital
             switch (choice)
             {
                 case SortByFullNameOption:
-                    DisplayPatientsInfo(patients.OrderBy(patient => patient.FullName), "Список больных, отсортированный по ФИО:");
+                    DisplayPatientsInfo(_patients.OrderBy(patient => patient.FullName), "Список больных, отсортированный по ФИО:");
                     break;
 
                 case SortByAgeOption:
-                    DisplayPatientsInfo(patients.OrderBy(patient => patient.Age), "Список больных, отсортированный по возрасту:");
+                    DisplayPatientsInfo(_patients.OrderBy(patient => patient.Age), "Список больных, отсортированный по возрасту:");
                     break;
 
                 case FilterByDiseaseOption:
@@ -107,26 +107,22 @@ class Hospital
         Console.Write("Введите название заболевания: ");
         string disease = Console.ReadLine();
 
-        var filteredPatients = patients.Where(patient => patient.Disease == disease);
-        Console.WriteLine($"Список больных с заболеванием '{disease}':");
-
-        foreach (var patient in filteredPatients)
-        {
-            DisplayPatientInfo(patient);
-        }
+        var filteredPatients = _patients.Where(patient => patient.Disease == disease);
+        DisplayPatientsInfo(filteredPatients, $"Список больных с заболеванием '{disease}':");
     }
+
 }
 
 class Patient
 {
-    public string FullName { get; }
-    public int Age { get; }
-    public string Disease { get; }
-
     public Patient(string fullName, int age, string disease)
     {
         FullName = fullName;
         Age = age;
         Disease = disease;
     }
+
+    public string FullName { get; }
+    public int Age { get; }
+    public string Disease { get; }
 }
