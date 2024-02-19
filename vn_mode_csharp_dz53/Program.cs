@@ -46,7 +46,7 @@ class Hospital
                     break;
 
                 case SortByAgeOption:
-                    DisplayPatientsInfo(_patients.OrderBy(patient => patient.Age), "Список больных, отсортированный по возрасту:");
+                    SortPatientsByAge();
                     break;
 
                 case FilterByDiseaseOption:
@@ -102,15 +102,28 @@ class Hospital
         return $"ФИО: {patient.FullName}, Возраст: {patient.Age}, Заболевание: {patient.Disease}";
     }
 
+    private void SortPatientsByAge()
+    {
+        var sortedPatients = _patients.OrderBy(patient => patient.Age);
+        DisplayPatientsInfo(sortedPatients, "Список больных, отсортированный по возрасту:");
+    }
+
     private void FilterPatientsByDisease()
     {
         Console.Write("Введите название заболевания: ");
         string disease = Console.ReadLine();
 
         var filteredPatients = _patients.Where(patient => patient.Disease == disease);
-        DisplayPatientsInfo(filteredPatients, $"Список больных с заболеванием '{disease}':");
-    }
 
+        if (filteredPatients.Any())
+        {
+            DisplayPatientsInfo(filteredPatients, $"Список больных с заболеванием '{disease}':");
+        }
+        else
+        {
+            Console.WriteLine($"Нет пациентов с диагнозом '{disease}'.");
+        }
+    }
 }
 
 class Patient
